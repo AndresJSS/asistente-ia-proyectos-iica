@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente IA - Proyectos IICA | IICA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        iica: {
+                            blue: '#002F6C', // Azul 295 oficial del Manual de Identidad del IICA
+                            light: '#EBF3FA', // Fondo azul tenue institucional para mensajes del usuario
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Personalización de la barra de desplazamiento para mantener la elegancia visual */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 h-screen flex flex-col font-sans text-gray-800 overflow-hidden">
+    
+    <header class="bg-iica-blue text-white shadow-md flex items-center justify-between px-6 py-4 flex-shrink-0 z-10">
+        <div class="flex items-center gap-4">
+            <div class="w-21 h-12 flex items-center justify-center p-1 shadow-sm overflow-hidden flex-shrink-0">
+                <img src="iica-logo.svg" alt="Logo IICA" class="w-full h-full object-contain">
+            </div>
+            <div>
+                <h1 class="text-xl font-semibold tracking-wide">Asistente de conocimiento sobre proyectos IICA</h1>
+                <p class="text-xs text-blue-200">Instituto Interamericano de Cooperación para la Agricultura (IICA)</p>
+            </div>
+        </div>
+        <div class="text-xs bg-blue-800 px-3 py-1 rounded-full border border-blue-600 shadow-inner tracking-wide flex-shrink-0">
+            PoC V2.0
+        </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto p-6 bg-gray-100 flex justify-center">
+        <div id="chat-box" class="w-full max-w-4xl flex flex-col gap-6 h-fit">
+            
+            <div class="flex gap-4 justify-start w-full chunk-mensaje">
+                <div class="w-10 h-10 rounded-full bg-iica-blue flex-shrink-0 flex items-center justify-center text-white font-bold shadow text-sm">IA</div>
+                <div class="max-w-[80%] p-4 rounded-2xl rounded-tl-none bg-white border border-gray-200 shadow-sm text-sm text-gray-700 leading-relaxed">
+                    Hola. Soy el Asistente de conocimiento sobre proyectos del IICA. Estoy aquí para ayudarte a consultar los resultados, lecciones aprendidas y buenas prácticas de los proyectos institucionales. ¿En qué te puedo ayudar hoy?
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 p-4 pb-2 w-full flex flex-col items-center justify-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] flex-shrink-0 z-10">
+        <div class="w-full max-w-4xl flex gap-3 items-center mb-2">
+            <input type="text" id="user-input" class="flex-1 border border-gray-300 rounded-full px-5 py-3 focus:outline-none focus:ring-2 focus:ring-iica-blue focus:border-transparent text-sm transition-all shadow-sm" placeholder="Escribe tu consulta sobre proyectos del IICA..." autocomplete="off">
+            <button id="send-btn" class="bg-iica-blue hover:bg-blue-800 text-white rounded-full p-3 transition-colors shadow-md flex items-center justify-center w-12 h-12 flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                </svg>
+            </button>
+        </div>
+        
+        <div class="w-full max-w-4xl text-center">
+            <p class="text-[11px] text-gray-400">
+                Este asistente es una IA que puede cometer errores de síntesis o interpretación. Es recomendable que por favor, revise siempre la información técnica antes de incluirla en propuestas oficiales.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        // Función encargada de asegurar la visualización del último contenido generado
+        function desplazarAlFinal() {
+            const ultimoMensaje = chatBox.lastElementChild;
+            if (ultimoMensaje) {
+                ultimoMensaje.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }
+        }
+
+        // Renderizado de mensajes
+        function addMessage(sender, text, fuentes = []) {
+            const isUser = sender === 'User';
+            const bubbleColor = isUser ? 'bg-iica-light border-blue-100' : 'bg-white border-gray-200';
+            const roundedClass = isUser ? 'rounded-tr-none' : 'rounded-tl-none';
+            const iconBg = isUser ? 'bg-gray-600' : 'bg-iica-blue';
+            const iconText = isUser ? 'US' : 'IA';
+            const justify = isUser ? 'justify-end' : 'justify-start';
+
+            // Construcción de las tarjetas de fuentes consultadas
+            let htmlFuentes = '';
+            if (fuentes && fuentes.length > 0) {
+                htmlFuentes = `<div class="mt-4 pt-3 border-t border-gray-200">
+                    <p class="text-[11px] uppercase tracking-wider font-semibold text-gray-500 mb-2">Fuentes consultadas:</p>
+                    <div class="flex flex-col gap-1.5">`;
+                fuentes.forEach(f => {
+                    htmlFuentes += `<div class="text-xs text-gray-600 bg-gray-50 p-2.5 rounded-md border border-gray-100 flex flex-col shadow-sm">
+                        <span class="font-medium text-iica-blue">${f.proyecto}</span>
+                        <span class="text-[10px] text-gray-400 mt-0.5">Unidad: ${f.pais} | Certeza semántica: ${f.certeza}%</span>
+                    </div>`;
+                });
+                htmlFuentes += `</div></div>`;
+            }
+
+            const formattedText = text.replace(/\n/g, '<br>');
+
+            const messageHTML = `
+                <div class="flex gap-4 ${justify} w-full chunk-mensaje">
+                    ${!isUser ? `<div class="w-10 h-10 rounded-full ${iconBg} flex-shrink-0 flex items-center justify-center text-white font-bold shadow text-sm">${iconText}</div>` : ''}
+                    
+                    <div class="max-w-[80%] p-4 rounded-2xl ${roundedClass} ${bubbleColor} border shadow-sm text-sm text-gray-700 leading-relaxed">
+                        ${formattedText}
+                        ${htmlFuentes}
+                    </div>
+
+                    ${isUser ? `<div class="w-10 h-10 rounded-full ${iconBg} flex-shrink-0 flex items-center justify-center text-white font-bold shadow text-sm">${iconText}</div>` : ''}
+                </div>
+            `;
+            chatBox.insertAdjacentHTML('beforeend', messageHTML);
+            desplazarAlFinal();
+        }
+
+        // Animación de carga (Burbuja con puntos suspensivos suspensos)
+        function showLoading() {
+            const loadingID = 'loading-' + Date.now();
+            const loadingHTML = `
+                <div id="${loadingID}" class="flex gap-4 justify-start w-full chunk-mensaje">
+                    <div class="w-10 h-10 rounded-full bg-iica-blue flex-shrink-0 flex items-center justify-center text-white font-bold shadow text-sm">IA</div>
+                    <div class="max-w-[80%] p-4 rounded-2xl rounded-tl-none bg-white border border-gray-200 shadow-sm text-sm text-gray-500 flex items-center gap-2">
+                        <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
+                        <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                        <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+                    </div>
+                </div>
+            `;
+            chatBox.insertAdjacentHTML('beforeend', loadingHTML);
+            desplazarAlFinal();
+            return loadingID;
+        }
+
+        async function sendMessage() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            addMessage('User', text);
+            userInput.value = '';
+            const loadingId = showLoading();
+            
+            userInput.disabled = true;
+            sendBtn.disabled = true;
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/consultar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        pregunta: text,
+                        unidad_filtro: null 
+                    })
+                });
+
+                if (!response.ok) throw new Error('Error en el servidor');
+                const data = await response.json();
+                
+                document.getElementById(loadingId).remove();
+                addMessage('IA', data.respuesta_ia, data.fuentes_utilizadas);
+
+            } catch (error) {
+                document.getElementById(loadingId).remove();
+                addMessage('IA', 'Lo siento, ha ocurrido un error de conexión. Asegúrate de que el motor de IA esté encendido.');
+            } finally {
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+                userInput.focus();
+                // Doble verificación de scroll tras limpiar estados de carga
+                setTimeout(desplazarAlFinal, 50);
+            }
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>
