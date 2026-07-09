@@ -126,7 +126,11 @@
         function desplazarAlFinal() {
             const ultimoMensaje = chatBox.lastElementChild;
             if (ultimoMensaje) {
-                ultimoMensaje.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                const posicionSuperior = ultimoMensaje.offsetTop - 20;
+                chatBox.scrollTo({
+                    top: posicionSuperior,
+                    behavior: 'smooth'
+                });
             }
         }
 
