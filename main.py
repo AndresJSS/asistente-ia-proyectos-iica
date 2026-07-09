@@ -194,7 +194,7 @@ async def consultar_agente(consulta: ConsultaUsuario):
         [REGLAS ESTRICTAS DE RESPUESTA]
         1. CERO INFERENCIAS: Basarás tu respuesta ÚNICAMENTE en los datos dentro de las etiquetas <contexto>. NO inventes datos.
         2. EVALUACIÓN DE PERTENENCIA: Si no hay información exacta sobre el proyecto o país solicitado, declara que no hay datos.
-        3. ESTRUCTURA Y FORMATO MARKDOWN: Es OBLIGATORIO estructurar cada proyecto utilizando viñetas anidadas. PROHIBIDO usar MAYÚSCULAS sostenidas para las etiquetas. Usa texto en negrita con este formato exacto:
+        3. ESTRUCTURA Y FORMATO MARKDOWN: Es OBLIGATORIO estructurar cada proyecto utilizando viñetas anidadas. PROHIBIDO usar MAYÚSCULAS sostenidas para las etiquetas. Debes usar estrictamente esta indentación (respeta los 4 espacios para el nivel secundario y 8 para el terciario):
         - **Proyecto:** [Nombre del proyecto]
           - **Unidad:** [Nombre de la unidad]
           - **Año de Registro:** [Año]
