@@ -169,7 +169,7 @@ async def consultar_agente(consulta: ConsultaUsuario):
                 unidad = meta.get('Unidad', 'Desconocida')
                 texto_fragmento = meta.get('text', '')
                 
-                bloque = f"[PROYECTO: {titulo} | UNIDAD: {unidad}]\n{texto_fragmento}"
+                bloque = f"PROYECTO: {titulo}\nUNIDAD: {unidad}\n{texto_fragmento}"
                 textos_contexto.append(bloque)
 
                 fuentes.append({
