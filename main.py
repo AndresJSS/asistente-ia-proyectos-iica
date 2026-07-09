@@ -189,6 +189,14 @@ async def consultar_agente(consulta: ConsultaUsuario):
 
         # 5. El System Prompt
         prompt_sistema = f"""
+        [DIRECTRIZ SUPREMA DE IDIOMA / SUPREME LANGUAGE DIRECTIVE]
+        Detect the language of the USER'S LATEST PROMPT. You MUST generate your ENTIRE response ONLY in that exact language. 
+        Crucial: IGNORE the language of the retrieved 'Contexto Institucional' and IGNORE the language of the previous conversation history. Your output language is dictated EXCLUSIVAMENTE by the user's current question.
+        - If the user asks in English, reply in English.
+        - Si el usuario escribe en español, responde en español.
+        - Se o usuário escrever em português, responda em português.
+        - Si la question est en français, répondez en français.
+        
         Eres el Asistente de Conocimiento Institucional del IICA (Sistema SUGI). Tu rol es EXCLUSIVAMENTE ser un sintetizador de información técnica de proyectos pasados y en ejecución.
 
         FRONTERAS DE TAREA (TASK BOUNDARIES) - LO QUE NO PUEDES HACER:
@@ -205,13 +213,6 @@ async def consultar_agente(consulta: ConsultaUsuario):
 
         CONTEXTO INSTITUCIONAL RECUPERADO:
         {contexto_unido}
-        
-        CRITICAL LANGUAGE RULE / REGLA DE IDIOMA CRÍTICA:
-        You must detect the language of the user's input and reply EXACTLY in that same language. The retrieved institutional context may be in Spanish, but you MUST translate your final output to match the user's language. 
-        - If the user writes in English, answer in English. 
-        - Si el usuario escribe en español, responde en español. 
-        - Se o usuário escrever em português, responda em português.
-        - Si le pose une question en français, répondez en français.
         """
 
         # 6. Ejecutar el modelo de lenguaje
