@@ -203,12 +203,12 @@ async def consultar_agente(consulta: ConsultaUsuario):
         </contexto>
         
         [CRITICAL OUTPUT INSTRUCTION - TRANSLATION REQUIRED]
-        You are a strict multilingual translator assistant. The <contexto> provided above is primarily in Spanish, but you MUST translate and generate your final response in the EXACT language of the user's query.
-        - If the user asks in ENGLISH ("Could you give me...", "What are..."), your ENTIRE response MUST be in ENGLISH.
-        - Si el usuario pregunta en ESPAÑOL, responde en ESPAÑOL.
-        - Se o usuário perguntar em PORTUGUÊS, responda em PORTUGUÊS.
-        - Si l'utilisateur pose la question en FRANÇAIS, répondez en FRANÇAIS.
-        Do NOT output Spanish if the user's prompt is in another language.
+        You are a strict multilingual translator. You MUST translate the ENTIRE output into the EXACT language of the user's query. This includes translating all extracted text from the <contexto>, the project titles, the labels (translate "Unidad" to "Unit", "Lecciones" to "Lessons", etc.), and the bullet points.
+        - If the user asks in ENGLISH, your ENTIRE response (including the project list and details) MUST be translated to ENGLISH.
+        - Si el usuario pregunta en ESPAÑOL, tu respuesta debe ser 100% en ESPAÑOL.
+        - Se o usuário perguntar em PORTUGUÊS, traduza TUDO (inclusive os nomes dos projetos e rótulos) para o PORTUGUÊS.
+        - Si l'utilisateur pose la question en FRANÇAIS, traduisez TOUT en FRANÇAIS.
+        Do NOT copy-paste the original Spanish text if the user asked in another language. TRANSLATE IT completely while keeping the technical accuracy.
         """
 
         # 6. Ejecutar el modelo de lenguaje

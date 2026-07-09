@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asistente IA - Proyectos IICA | IICA</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -33,6 +34,25 @@
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
+        }
+        /* Estilos para renderizar correctamente el Markdown de la IA */
+        .markdown-content p {
+            margin-bottom: 0.75rem;
+        }
+        .markdown-content p:last-child {
+            margin-bottom: 0;
+        }
+        .markdown-content strong {
+            font-weight: 700;
+            color: #1f2937; /* Gris más oscuro para que resalte la negrita */
+        }
+        .markdown-content ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .markdown-content li {
+            margin-bottom: 0.25rem;
         }
     </style>
 </head>
@@ -120,7 +140,7 @@
                 htmlFuentes += `</div></div>`;
             }
 
-            const formattedText = text.replace(/\n/g, '<br>');
+            const formattedText = isUser ? text.replace(/\n/g, '<br>') : marked.parse(text);
 
             const messageHTML = `
                 <div class="flex gap-4 ${justify} w-full chunk-mensaje">
