@@ -123,14 +123,23 @@
         const sendBtn = document.getElementById('send-btn');
 
         // Función encargada de asegurar la visualización del último contenido generado
-        function desplazarAlFinal() {
+        function desplazarAlFinal(esRespuestaIA = false) {
             const ultimoMensaje = chatBox.lastElementChild;
             if (ultimoMensaje) {
-                const posicionSuperior = ultimoMensaje.offsetTop - 20;
-                chatBox.scrollTo({
-                    top: posicionSuperior,
-                    behavior: 'smooth'
-                });
+                if (esRespuestaIA) {
+                    // Comportamiento IA: Ancla superior para leer la respuesta desde el principio
+                    const posicionSuperior = ultimoMensaje.offsetTop - 20;
+                    chatBox.scrollTo({
+                        top: posicionSuperior,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    // Comportamiento Usuario/Carga: Va hasta el fondo total para ver la pregunta y los 3 puntos
+                    chatBox.scrollTo({
+                        top: chatBox.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                }
             }
         }
 
@@ -173,7 +182,7 @@
                 </div>
             `;
             chatBox.insertAdjacentHTML('beforeend', messageHTML);
-            desplazarAlFinal();
+            desplazarAlFinal(!isUser);
         }
 
         // Animación de carga (Burbuja con puntos suspensivos suspensos)
@@ -190,7 +199,9 @@
                 </div>
             `;
             chatBox.insertAdjacentHTML('beforeend', loadingHTML);
-            desplazarAlFinal();
+            
+            // Le pasamos 'false' porque queremos ir al fondo absoluto para ver la animación
+            desplazarAlFinal(false);
             return loadingID;
         }
 
@@ -229,7 +240,7 @@
                 sendBtn.disabled = false;
                 userInput.focus();
                 // Doble verificación de scroll tras limpiar estados de carga
-                setTimeout(desplazarAlFinal, 50);
+                setTimeout(() => desplazarAlFinal(true), 50);
             }
         }
 
