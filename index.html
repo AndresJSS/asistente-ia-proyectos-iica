@@ -122,7 +122,7 @@
         const userInput = document.getElementById('user-input');
         const sendBtn = document.getElementById('send-btn');
 
-        // Función encargada de asegurar la visualización del último contenido generado
+        // 1. SCROLL INTELIGENTE: Decide cómo desplazarse según el contexto
         function desplazarAlFinal(esRespuestaIA = false) {
             const ultimoMensaje = chatBox.lastElementChild;
             if (ultimoMensaje) {
@@ -167,14 +167,17 @@
                 htmlFuentes += `</div></div>`;
             }
 
+            // Renderizado de Markdown para la IA, texto plano para el Usuario
             const formattedText = isUser ? text.replace(/\n/g, '<br>') : marked.parse(text);
 
             const messageHTML = `
                 <div class="flex gap-4 ${justify} w-full chunk-mensaje">
                     ${!isUser ? `<div class="w-10 h-10 rounded-full ${iconBg} flex-shrink-0 flex items-center justify-center text-white font-bold shadow text-sm">${iconText}</div>` : ''}
                     
-                    <div class="max-w-[80%] p-4 rounded-2xl ${roundedClass} ${bubbleColor} border shadow-sm text-sm text-gray-700 leading-relaxed">
-                        ${formattedText}
+                    <div class="max-w-[80%] p-4 rounded-2xl ${roundedClass} ${bubbleColor} border shadow-sm text-sm text-gray-700 leading-relaxed overflow-hidden">
+                        <div class="markdown-content">
+                            ${formattedText}
+                        </div>
                         ${htmlFuentes}
                     </div>
 
@@ -182,6 +185,8 @@
                 </div>
             `;
             chatBox.insertAdjacentHTML('beforeend', messageHTML);
+            
+            // Llamamos al scroll inteligente indicándole si el que habla es la IA (true) o el Usuario (false)
             desplazarAlFinal(!isUser);
         }
 
@@ -239,7 +244,8 @@
                 userInput.disabled = false;
                 sendBtn.disabled = false;
                 userInput.focus();
-                // Doble verificación de scroll tras limpiar estados de carga
+                
+                // Doble verificación: Garantiza el anclaje superior de la IA en caso de respuestas muy largas
                 setTimeout(() => desplazarAlFinal(true), 50);
             }
         }
