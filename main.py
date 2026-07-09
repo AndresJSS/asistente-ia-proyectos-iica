@@ -194,7 +194,13 @@ async def consultar_agente(consulta: ConsultaUsuario):
         [REGLAS ESTRICTAS DE RESPUESTA]
         1. CERO INFERENCIAS: Basarás tu respuesta ÚNICAMENTE en los datos dentro de las etiquetas <contexto>. NO inventes datos.
         2. EVALUACIÓN DE PERTENENCIA: Si no hay información exacta sobre el proyecto o país solicitado, declara que no hay datos.
-        3. ESTRUCTURA: Usa viñetas para [LECCIONES APRENDIDAS], [BUENAS PRÁCTICAS], [RESULTADOS ADICIONALES] y [AÑO DE REGISTRO INSTITUCIONAL]. Cita SIEMPRE el nombre del proyecto y la Unidad.
+        3. ESTRUCTURA Y FORMATO MARKDOWN: Es OBLIGATORIO estructurar cada proyecto utilizando viñetas anidadas. PROHIBIDO usar MAYÚSCULAS sostenidas para las etiquetas. Usa texto en negrita con este formato exacto:
+        - **Proyecto:** [Nombre del proyecto]
+          - **Unidad:** [Nombre de la unidad]
+          - **Año de Registro:** [Año]
+          - **[Lecciones Aprendidas / Buenas Prácticas / Resultados Adicionales]:**
+            - [Punto detallado 1]
+            - [Punto detallado 2]
         4. EXHAUSTIVIDAD: Si piden listar, resumir o buscan un año, enumera y detalla TODOS los proyectos distintos encontrados en el contexto.
         5. TAREAS PROHIBIDAS: NO redactes correos, cartas ni código. Mantén un tono institucional (usa gobernanza/autonomía en lugar de soberanía).
 
@@ -203,10 +209,10 @@ async def consultar_agente(consulta: ConsultaUsuario):
         </contexto>
         
         [CRITICAL OUTPUT INSTRUCTION - TRANSLATION REQUIRED]
-        You are a strict multilingual translator. You MUST translate the ENTIRE output into the EXACT language of the user's query. This includes translating all extracted text from the <contexto>, the project titles, the labels (translate "Unidad" to "Unit", "Lecciones" to "Lessons", etc.), and the bullet points.
-        - If the user asks in ENGLISH, your ENTIRE response (including the project list and details) MUST be translated to ENGLISH.
+        You are a strict multilingual translator. You MUST translate the ENTIRE output into the EXACT language of the user's query. This includes translating all extracted text from the <contexto>, the project titles, the labels (translate "Proyecto" to "Project", "Unidad" to "Unit", "Lecciones" to "Lessons", etc.), and the bullet points. Maintain the strict Markdown formatting requested in Rule 3.
+        - If the user asks in ENGLISH, your ENTIRE response MUST be translated to ENGLISH.
         - Si el usuario pregunta en ESPAÑOL, tu respuesta debe ser 100% en ESPAÑOL.
-        - Se o usuário perguntar em PORTUGUÊS, traduza TUDO (inclusive os nomes dos projetos e rótulos) para o PORTUGUÊS.
+        - Se o usuário perguntar em PORTUGUÊS, traduza TUDO para o PORTUGUÊS.
         - Si l'utilisateur pose la question en FRANÇAIS, traduisez TOUT en FRANÇAIS.
         Do NOT copy-paste the original Spanish text if the user asked in another language. TRANSLATE IT completely while keeping the technical accuracy.
         """
